@@ -1,5 +1,6 @@
 package strings;
 
+import java.util.Arrays;
 import java.util.Hashtable;
 
 /**
@@ -41,9 +42,9 @@ public class RabinKarp {
 
     public RabinKarp(String[] pat) {
 
-
-         this.pat = pat; // save pattern (only needed for Las Vegas)
-         this.M = pat.length();
+        // CERTAINS TRUC ONT ETE CHANGER SUR LES DEUX LIGNES SUIVANTES
+         this.pat = Arrays.toString(pat); // save pattern (only needed for Las Vegas)
+         //this.M = pat.length();
         Q = 4463;
         RM = 1;
 

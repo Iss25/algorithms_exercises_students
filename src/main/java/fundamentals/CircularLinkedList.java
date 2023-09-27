@@ -72,7 +72,8 @@ public class CircularLinkedList<Item> implements Iterable<Item> {
      * Returns the element that was removed from the list.
      */
     public Item remove(int index) {
-        // BEGIN STUDENT return null;
+        // TODO STUDENT
+        return null;
     }
 
 
@@ -100,12 +101,12 @@ public class CircularLinkedList<Item> implements Iterable<Item> {
 
         @Override
         public boolean hasNext() {
-            // BEGIN STUDENT return false;
+            return false;
         }
 
         @Override
         public Item next() {
-            // BEGIN STUDENT return null;
+            return null;
         }
 
     }
