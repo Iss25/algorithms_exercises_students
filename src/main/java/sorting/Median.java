@@ -105,8 +105,22 @@ public class Median {
      * @param hi the highest index from which the median is computed
      */
     public static int median(Vector vec, int lo, int hi) {
-        // TODO
-         return -1;
+        int i = lo;
+        int j = hi+1;
+        int val = vec.get(lo);
+        while (true) {
+            while (vec.get(++i) < val) if (i == hi) break;
+            while (val < vec.get(--j)) if (j == lo) break;
+            if (i >= j) break;
+            vec.swap(i,j);
+        }
+        vec.swap(lo,j);
+        if(j == vec.size()/2) {
+            return vec.get(j);
+        } else if (j < vec.size()/2) {
+            return median(vec, j+1, hi);
+        }else {
+            return median(vec, lo, j-1);
+        }
     }
-
 }
