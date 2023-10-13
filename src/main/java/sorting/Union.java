@@ -1,6 +1,9 @@
 package sorting;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Author Pierre Schaus
  *
@@ -55,9 +58,25 @@ public class Union {
      * @param intervals the intervals to unite.
      */
     public static Interval[] union(Interval[] intervals) {
-        // TODO
-         return new Interval[]{};
-
+        Arrays.sort(intervals);
+        int min = intervals[0].min;
+        int max = intervals[0].max;
+        ArrayList<Interval> sol = new ArrayList<Interval>();
+        for (int i = 0; i < intervals.length; i++) {
+            if(intervals[i].min > max){
+                Interval minmax_temp = new Interval(min,max);
+                min = intervals[i].min;
+                max = intervals[i].max;
+                sol.add(minmax_temp);
+            }else {
+                if(max < intervals[i].max){
+                    max = intervals[i].max;
+                }
+            }
+        }
+        Interval minmax_temp = new Interval(min,max);
+        sol.add(minmax_temp);
+        return sol.toArray(new Interval[0]);
     }
 
 }
