@@ -73,11 +73,14 @@ public class GlobalWarmingImpl extends GlobalWarming {
      * @param waterLevel the level of water
      */
     public int nbSafePoints(int waterLevel) {
-        // TODO
-        // expected time complexity O(log(n^2))
-         return -1;
+        int secured = 0;
+        for (int i = 0; i < altitude.length; i++) {
+            for (int j = 0; j < altitude.length; j++) {
+                if(altitude[i][j] > waterLevel){
+                    secured++;
+                }
+            }
+        }
+        return secured;
     }
-
-
-
 }
