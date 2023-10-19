@@ -99,7 +99,12 @@ public class BinarySearchTreeHigher<Key extends Comparable<Key>, Value> {
      * @return the minimum key, null if the tree is empty
      */
     public Key minKey() {
-         return null;
+        Key min = root.key;
+        while(root != null){
+            min = root.key;
+            root = root.left;
+        }
+        return min;
     }
 
 
