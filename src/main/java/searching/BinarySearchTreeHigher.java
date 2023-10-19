@@ -117,11 +117,33 @@ public class BinarySearchTreeHigher<Key extends Comparable<Key>, Value> {
      * @return the least key greater than key, or null if there is no such key
      */
     public Key higherKey(Key key) {
-         return null;
+        if(root == null){
+            System.out.println("PROBLEM");
+        }
+        while(root != null) {
+            int keyval = key.compareTo(root.key);
+            if(keyval == 0){
+                return root.right.key;
+            }
+            else if (keyval > 0) {
+                root = root.right;
+            }
+            else {
+                root = root.left;
+            }
+        }
+        return null;
     }
 
     private Key higherKey(Node x, Key key) {
-         return null;
+        /*if (x == null) return null;
+        int cmp = key.compareTo(x.key);
+        if (cmp >= 0) return higherKey(x.right, key);
+        Key left = higherKey(x.left, key);
+        if (left == null) return x.key;
+        else return left;
+        */
+        return null;
     }
 
 }
