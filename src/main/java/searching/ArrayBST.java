@@ -74,6 +74,19 @@ public class ArrayBST<Key extends Comparable<Key>, Value> {
      * @return the value attached to this key, null if the key is not present
      */
     public Value get(Key key) {
+        int pos = 0;
+        while(pos != -1){
+            int diff = key.compareTo(keys.get(pos));
+            if (diff == 0){
+                return values.get(pos);
+            }
+            else if(diff < 0) {
+                pos = idxLeftNode.get(pos);
+            }
+            else {
+                pos = idxRightNode.get(pos);
+            }
+        }
         return null;
     }
 }
