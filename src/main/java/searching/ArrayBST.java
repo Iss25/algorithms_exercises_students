@@ -2,6 +2,9 @@ package searching;
 
 import java.util.ArrayList;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  *  We study a BST representation using an arrayList internal representation.
@@ -64,7 +67,61 @@ public class ArrayBST<Key extends Comparable<Key>, Value> {
      * @return true if the key was added, false if already present and the value has simply been erased
      */
     public boolean put(Key key, Value val) {
-        return false;
+        /*if (values.size() > 0) {
+            int i = 0; // start at the root
+            // the new node will be created at index values.size
+            ArrayList<Integer> idxChild;
+            do {
+                int cmp = key.compareTo(keys.get(i));
+                if (cmp == 0) {
+                    // key already present in this node, just replace its value
+                    values.set(i,val);
+                    return false;
+                } else {
+                    // key different, follow the left or right link
+                    idxChild = cmp < 0 ? idxLeftNode : idxRightNode;
+                    int next = idxChild.get(i);
+                    if (next == NONE) idxChild.set(i,keys.size());  // leaf node reached, we create the reference toward the new node
+                    i = next;
+                }
+            } while (i != NONE);
+        }
+        // create the new node
+        keys.add(key);
+        values.add(val);
+        idxLeftNode.add(-1);
+        idxRightNode.add(-1);
+        return true;*/
+        int pos = 0;
+        int lstpos = 0;
+        if(values.size() > 0){
+            while (pos != -1){
+                int diff = key.compareTo(keys.get(pos));
+                if(diff == 0){
+                    values.set(pos,val);
+                    return false;
+                }
+                else if(diff < 0){
+                    lstpos = pos;
+                    pos = idxLeftNode.get(pos);
+                    if(pos == -1){
+                        idxLeftNode.set(lstpos, keys.size());
+                    }
+                }
+                else{
+                    lstpos = pos;
+                    pos = idxRightNode.get(pos);
+                    if(pos == -1){
+                        idxRightNode.set(lstpos, keys.size());
+                    }
+                }
+            }
+        }
+        keys.add(key);
+        values.add(val);
+        idxLeftNode.add(-1);
+        idxRightNode.add(-1);
+        return true;
     }
 
     /**
