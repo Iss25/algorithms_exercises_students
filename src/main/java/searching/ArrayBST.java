@@ -67,31 +67,6 @@ public class ArrayBST<Key extends Comparable<Key>, Value> {
      * @return true if the key was added, false if already present and the value has simply been erased
      */
     public boolean put(Key key, Value val) {
-        /*if (values.size() > 0) {
-            int i = 0; // start at the root
-            // the new node will be created at index values.size
-            ArrayList<Integer> idxChild;
-            do {
-                int cmp = key.compareTo(keys.get(i));
-                if (cmp == 0) {
-                    // key already present in this node, just replace its value
-                    values.set(i,val);
-                    return false;
-                } else {
-                    // key different, follow the left or right link
-                    idxChild = cmp < 0 ? idxLeftNode : idxRightNode;
-                    int next = idxChild.get(i);
-                    if (next == NONE) idxChild.set(i,keys.size());  // leaf node reached, we create the reference toward the new node
-                    i = next;
-                }
-            } while (i != NONE);
-        }
-        // create the new node
-        keys.add(key);
-        values.add(val);
-        idxLeftNode.add(-1);
-        idxRightNode.add(-1);
-        return true;*/
         int pos = 0;
         int lstpos = 0;
         if(values.size() > 0){
