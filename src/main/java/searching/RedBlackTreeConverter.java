@@ -42,7 +42,29 @@ public class RedBlackTreeConverter {
      * @return a RBNode which is the root of the equivalent RedBlackTRee
      */
     public static<Key extends Comparable<Key>> RBNode<Key> convert(TwoThreeNode<Key> twoThreeNode) {
-         return null;
+        if(twoThreeNode == null){
+            return null;
+        }
+        if(twoThreeNode.is2node()){
+            RBNode<Key> actual = new RBNode<>(twoThreeNode.leftKey, twoThreeNode.leftValue, Color.Black,1);
+            actual.leftChild = convert(twoThreeNode.leftChild);
+            actual.rightChild = convert(twoThreeNode.centerChild);
+            actual.size += sizeEvenIfNull(actual.leftChild) + sizeEvenIfNull(actual.rightChild);
+            return actual;
+        }
+        else{
+            RBNode<Key> black = new RBNode<>(twoThreeNode.rightKey, twoThreeNode.rightValue, Color.Black,1);
+            RBNode<Key> red = new RBNode<>(twoThreeNode.leftKey, twoThreeNode.leftValue, Color.Red,1);
+
+            black.leftChild = red;
+            black.rightChild = convert(twoThreeNode.rightChild);
+            red.rightChild = convert(twoThreeNode.centerChild);
+            red.leftChild = convert(twoThreeNode.leftChild);
+
+            red.size += sizeEvenIfNull(red.leftChild) + sizeEvenIfNull(red.rightChild);
+            black.size += sizeEvenIfNull(black.leftChild) + sizeEvenIfNull(black.rightChild);
+            return black;
+        }
     }
     
     public static enum Color {
