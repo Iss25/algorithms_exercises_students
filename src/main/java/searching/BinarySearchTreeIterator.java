@@ -3,6 +3,7 @@ package searching;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Stack;
 
 /**
  * In this exercise, we are interested in implementing an iterator (BSTIterator) for a Binary Search Tree (BST).
@@ -98,14 +99,45 @@ public class BinarySearchTreeIterator<Key extends Comparable<Key>> implements It
 
     private class BSTIterator implements Iterator<Key> {
 
+        private int size;
+        private Stack<BSTNode<Key>> stack;
+
+        public BSTIterator(){
+            this.stack = new Stack<>();
+            this.size = size();
+            BSTNode<Key> actual = root;
+            while (actual != null){
+                this.stack.push(actual);
+                actual = actual.getLeft();
+            }
+        }
+
         @Override
         public boolean hasNext() {
-            return false;
+            if (this.size != size()){
+                throw new ConcurrentModificationException();
+            }
+            return !this.stack.isEmpty();
         }
 
         @Override
         public Key next() {
-            return null;
+            if (this.size != size()){
+                throw new ConcurrentModificationException();
+            }
+            if (!this.hasNext()){
+                throw new NoSuchElementException();
+            }
+            BSTNode<Key> node = this.stack.pop();
+            Key key = node.getKey();
+            if (node.getRight() != null){
+                node = node.getRight();
+                while (node != null){
+                    this.stack.push(node);
+                    node = node.getLeft();
+                }
+            }
+            return key;
         }
     }
 
