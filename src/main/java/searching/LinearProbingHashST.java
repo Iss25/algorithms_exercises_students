@@ -87,6 +87,18 @@ public class LinearProbingHashST<Key, Value> {
      * @param capacity the capacity
      */
     protected void resize(int capacity) {
+        m = capacity;
+        n = 0;
+        Key[] key_old = keys;
+        keys = (Key[]) new Object[m];
+        Value[] values_old = vals;
+        vals = (Value[]) new Object[m];
+
+        for (int i = 0; i < key_old.length; i++) {
+            if(key_old[i] != null){
+                put(key_old[i],values_old[i]);
+            }
+        }
     }
 
     /**
