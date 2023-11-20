@@ -122,9 +122,11 @@ public class LinearProbingHashST<Key, Value> {
         while(keys[place] != null && keys[place] != key){
             place = (place + 1)%m;
         }
+        if (keys[place] == null){
+            n = n+1;
+        }
         keys[place] = key;
         vals[place] = val;
-        n += 1;
     }
 
     /**
