@@ -25,9 +25,9 @@ import java.util.TreeMap;
  */
 class BirthdayMap {
     // Hint: feel free to use existing java classes from Java such as java.util.TreeMap
-
+    TreeMap<String,List<Person>> birthdayMap;
     BirthdayMap() {
-        // TODO
+        this.birthdayMap = new TreeMap<>();
     }
 
     /**
@@ -38,7 +38,8 @@ class BirthdayMap {
      * @param person
      */
     void addPerson(Person person) {
-        // TODO
+        this.birthdayMap.putIfAbsent(person.birthday, new ArrayList<>());
+        this.birthdayMap.get(person.birthday).add(person);
     }
 
     /**
@@ -49,8 +50,10 @@ class BirthdayMap {
      *          An empty list is returned if no entries are found for the specified date.
      */
     List<Person> getPeopleBornOnDate(String date) {
-        // TODO
-        return null;
+        if(this.birthdayMap.get(date) == null){
+            return new ArrayList<>();
+        }
+        return this.birthdayMap.get(date);
     }
 
 
@@ -63,8 +66,11 @@ class BirthdayMap {
      *         If no entries are found for the specified year, the function returns an empty list.
      */
     List<Person> getPeopleBornInYear(String year) {
-        // TODO
-        return null;
+        List<Person> res = new ArrayList<>();
+        for (List<Person> lst: this.birthdayMap.subMap(year+"-01-01",(year+1)+"-01-01").values()) {
+            res.addAll(lst);
+        }
+        return res;
     }
 
 
