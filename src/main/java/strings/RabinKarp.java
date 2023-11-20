@@ -30,10 +30,11 @@ import java.util.Hashtable;
 public class RabinKarp {
 
 
-     private String pat; // pattern (only needed for Las Vegas)
+    private String pat; // pattern (only needed for Las Vegas)
 
-     private long patHash; // pattern hash value
+    //private long patHash; // pattern hash value
 
+    public Hashtable<Long,String> hashtable = new Hashtable<>();
 
     private int M; // pattern length
     private long Q; // a large prime
@@ -43,18 +44,24 @@ public class RabinKarp {
     public RabinKarp(String[] pat) {
 
         // CERTAINS TRUC ONT ETE CHANGER SUR LES DEUX LIGNES SUIVANTES
-         this.pat = Arrays.toString(pat); // save pattern (only needed for Las Vegas)
-         //this.M = pat.length();
+        this.pat = Arrays.toString(pat); // save pattern (only needed for Las Vegas)
+        this.M = pat[0].length();
         Q = 4463;
         RM = 1;
 
-        for (int i = 1; i <= M - 1; i++) // Compute R^(M-1) % Q for use
+        for (int i = 1; i <= M - 1; i++){ // Compute R^(M-1) % Q for use
             RM = (R * RM) % Q; // in removing leading digit.
+        }
 
+        for (int i = 0; i < pat.length; i++) {
+            long place = hash(pat[i],M);
+            this.hashtable.put(place,pat[i]);
+        }
     }
 
-     public boolean check(int i) // Monte Carlo (See text.)
-     { return true; } // For Las Vegas, check pat vs txt(i..i-M+1).
+     public boolean check(int i,long hash,String txt){
+        return hashtable.get(hash).equals(txt.substring(i, i + M));
+     } // For Las Vegas, check pat vs txt(i..i-M+1).
 
 
     private long hash(String key, int M) { // Compute hash for key[0..M-1].
@@ -69,12 +76,17 @@ public class RabinKarp {
         int N = txt.length();
         long txtHash = hash(txt, M);
 
-         if (patHash == txtHash) return 0; // Match at beginning.
+        if(hashtable.containsKey(txtHash) && check(0,txtHash,txt)){
+            return 0;
+        }
         for (int i = M; i < N; i++) { // Remove leading digit, add trailing digit, check for match.
             txtHash = (txtHash + Q - RM * txt.charAt(i - M) % Q) % Q;
             txtHash = (txtHash * R + txt.charAt(i)) % Q;
-             if (patHash == txtHash)
-                if (check(i - M + 1)) return i - M + 1; // match
+            if(hashtable.containsKey(txtHash)){
+                if(check(i - M + 1,txtHash,txt)){
+                    return i - M + 1;
+                }
+            }
         }
         return N; // no match found
     }
