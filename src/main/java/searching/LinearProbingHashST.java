@@ -112,6 +112,19 @@ public class LinearProbingHashST<Key, Value> {
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
     public void put(Key key, Value val) {
+        if(key == null){
+            throw new IllegalArgumentException();
+        }
+        if(n+1 > m/2){
+            resize(m*2);
+        }
+        int place = hash(key);
+        while(keys[place] != null && keys[place] != key){
+            place = (place + 1)%m;
+        }
+        keys[place] = key;
+        vals[place] = val;
+        n += 1;
     }
 
     /**
@@ -123,8 +136,21 @@ public class LinearProbingHashST<Key, Value> {
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
     public Value get(Key key) {
-         return null;
-
+        if(key == null){
+            throw new IllegalArgumentException();
+        }
+        int place = hash(key);
+        int act = 0;
+        for (int i = 0; i < m; i++) {
+            act = (place + i)%m;
+            if(keys[act] == null){
+                return null;
+            }
+            else if(key.equals(keys[act])){
+                return vals[act];
+            }
+        }
+        return null;
     }
 
     /**
