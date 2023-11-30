@@ -40,6 +40,18 @@ public class BinaryHeap {
      * @param value the added value
      */
     public void push(int value) {
+        this.size ++;
+        if(size() >= this.content.length){
+            this.increaseSize();
+        }
+        int i = size();
+        this.content[i] = value;
+        while(i>0 && this.getContent()[i] < this.getContent()[i/2]){
+            int temp = this.getContent()[i/2];
+            this.content[i/2] = this.getContent()[i];
+            this.content[i] = temp;
+            i /= 2;
+        }
     }
 
     /**
