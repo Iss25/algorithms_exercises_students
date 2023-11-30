@@ -57,7 +57,9 @@ public class MinMaxHeap<Key extends Comparable<Key>> {
      * Expected time complexity: O(1)
      */
     public Key min() {
-        // TODO STUDENT
+        if(size() > 0){
+            return this.content[1];
+        }
         return null;
     }
 
@@ -66,8 +68,20 @@ public class MinMaxHeap<Key extends Comparable<Key>> {
      * Expected time complexity: O(1)
      */
     public Key max() {
-        // TODO STUDENT
-        return null;
+        if(size() <=1 ){
+            return min();
+        }
+        if(size() == 2){
+            return this.content[2];
+        }
+        else{
+            if(higherThan(this.content[2],this.content[3])){
+                return this.content[2];
+            }
+            else{
+                return this.content[3];
+            }
+        }
     }
 
     /**
@@ -121,6 +135,31 @@ public class MinMaxHeap<Key extends Comparable<Key>> {
      * @param position The position of the node to swim in the `content` array
      */
     public void swim(int position) {
+        if (position == 1){
+            return;
+        }
+        int depth = getNodeDepth(position);
+        if(depth % 2 == 0 ){
+            if(higherThan(this.content[position],this.content[position/2])){
+                swap(position,position/2);
+                swim(position/2);
+            }
+            else if(position/4 != 0 && position/2 != position/4 && lessThan(this.content[position],this.content[position/4])) {
+                swap(position,position/4);
+                swim(position/4);
+            }
+        }
+        else{
+            if(lessThan(this.content[position],this.content[position/2])){
+                swap(position,position/2);
+                swim(position/2);
+            }
+            else if(position/4 != 0 && position/2 != position/4 && higherThan(this.content[position],this.content[position/4])) {
+                swap(position,position/4);
+                swim(position/4);
+            }
+        }
+
     }
 
     /**
