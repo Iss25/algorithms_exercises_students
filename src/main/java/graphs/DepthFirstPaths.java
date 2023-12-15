@@ -49,7 +49,13 @@ public class DepthFirstPaths {
 
     // Depth first search from v
     private void dfs(Graph G, int v) {
-        // TODO
+        marked[v] = true;
+        for(int adj : G.adj(v)){
+            if(!marked[adj]){
+                edgeTo[adj] = v;
+                dfs(G,adj);
+            }
+        }
     }
 
     /**
@@ -59,8 +65,7 @@ public class DepthFirstPaths {
      * @return true if there is a path, false otherwise
      */
     public boolean hasPathTo(int v) {
-        // TODO
-         return false;
+        return marked[v];
     }
 
     /**
@@ -72,8 +77,14 @@ public class DepthFirstPaths {
      * s and vertex v, as an Iterable
      */
     public Iterable<Integer> pathTo(int v) {
-        // TODO
-         return null;
+        if (!hasPathTo(v)){
+            return null;
+        }
+        ArrayList<Integer> res = new ArrayList<>();
+        for (int i = v; i != s; i=edgeTo[i]) {
+            res.add(i);
+        }
+        return res;
     }
 
     static class Graph {
