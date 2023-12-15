@@ -1,6 +1,7 @@
 package graphs;
 
-
+import java.util.LinkedList;
+import java.util.Collections;
 /**
  * We are interested in solving a maze represented
  * by a matrix of integers 0-1 of size nxm.
@@ -25,8 +26,51 @@ package graphs;
  */
 public class Maze {
     public static Iterable<Integer> shortestPath(int[][] maze, int x1, int y1, int x2, int y2) {
-        // TODO
-         return null;
+        if(maze[x1][y1] == 1 || maze[x2][y2] == 1){
+            return new LinkedList<>();
+        }
+        LinkedList<Integer> queue = new LinkedList<>();
+        LinkedList<Integer> res = new LinkedList<>();
+        int size = maze.length * maze[0].length;
+        int[] to = new int[size];
+        boolean[] visited = new boolean[size];
+        int src = ind(x1,y1,maze[0].length);
+        int dest = ind(x2,y2,maze[0].length);
+        visited[ind(x1,y1, maze[0].length)] = true;
+        queue.add(ind(x1,y1,maze[0].length));
+        boolean found = false;
+        final int[][] neighbours = new int[][]{{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+
+        while (!queue.isEmpty() && !found){
+            int act = queue.remove();
+            int x_act = row(act, maze[0].length);
+            int y_act = row(act, maze[0].length);
+            for (int i = 0; i < 4; i++) {
+                int xn = x_act + neighbours[i][0];
+                int yn = y_act + neighbours[i][1];
+
+                if(( 0 <= xn && xn < maze.length) && (0 <= yn && yn < maze[0].length ) && maze[xn][yn] != 1){
+                    int pos = ind(xn,yn,maze[0].length);
+                    if(!visited[pos]){
+                        queue.add(pos);
+                        to[pos] = act;
+                        visited[pos] = true;
+                        if(xn == x2 && yn == y2) found = true;
+                    }
+                }
+            }
+        }
+
+        if(visited[dest]){
+            while(dest != src){
+                res.add(dest);
+                dest = to[dest];
+            }
+            res.add(dest);
+            Collections.reverse(res);
+            return res;
+        }
+        return res;
     }
 
     public static int ind(int x, int y, int lg) {
