@@ -31,20 +31,25 @@ public class Maze {
         }
         LinkedList<Integer> queue = new LinkedList<>();
         LinkedList<Integer> res = new LinkedList<>();
+
         int size = maze.length * maze[0].length;
         int[] to = new int[size];
         boolean[] visited = new boolean[size];
+
         int src = ind(x1,y1,maze[0].length);
         int dest = ind(x2,y2,maze[0].length);
+
         visited[ind(x1,y1, maze[0].length)] = true;
         queue.add(ind(x1,y1,maze[0].length));
         boolean found = false;
+
         final int[][] neighbours = new int[][]{{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
 
         while (!queue.isEmpty() && !found){
             int act = queue.remove();
             int x_act = row(act, maze[0].length);
-            int y_act = row(act, maze[0].length);
+            int y_act = col(act, maze[0].length);
+
             for (int i = 0; i < 4; i++) {
                 int xn = x_act + neighbours[i][0];
                 int yn = y_act + neighbours[i][1];
@@ -52,9 +57,9 @@ public class Maze {
                 if(( 0 <= xn && xn < maze.length) && (0 <= yn && yn < maze[0].length ) && maze[xn][yn] != 1){
                     int pos = ind(xn,yn,maze[0].length);
                     if(!visited[pos]){
+                        visited[pos] = true;
                         queue.add(pos);
                         to[pos] = act;
-                        visited[pos] = true;
                         if(xn == x2 && yn == y2) found = true;
                     }
                 }
