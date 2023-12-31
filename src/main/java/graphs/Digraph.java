@@ -1,4 +1,5 @@
 package graphs;
+import java.util.ArrayList;
 
 
 /**
@@ -8,32 +9,39 @@ package graphs;
  */
 public class Digraph {
 
+    private int V;
+    private int E;
+    private ArrayList<ArrayList> graph;
 
     public Digraph(int V) {
-        // TODO
+        this.V = V;
+        this.E = E;
+        graph = new ArrayList<ArrayList>();
+        for (int i = 0; i < V(); i++) {
+            graph.add(new ArrayList<>());
+        }
     }
 
     /**
      * The number of vertices
      */
     public int V() {
-        // TODO
-         return -1;
+        return V;
     }
 
     /**
      * The number of edges
      */
     public int E() {
-        // TODO
-         return -1;
+        return E;
     }
 
     /**
      * Add the edge v->w
      */
     public void addEdge(int v, int w) {
-        // TODO
+        this.graph.get(v).add(w);
+        E++;
     }
 
     /**
@@ -41,16 +49,20 @@ public class Digraph {
      * that is the nodes w such that there is an edge v->w
      */
     public Iterable<Integer> adj(int v) {
-        // TODO
-         return null;
+        return graph.get(v);
     }
 
     /**
      * A copy of the digraph with all edges reversed
      */
     public Digraph reverse() {
-        // TODO
-         return null;
+        Digraph reversed = new Digraph(V);
+        for (int i = 0; i < this.V; i++) {
+            for (int w: adj(i)) {
+                reversed.addEdge(w,i);
+            }
+        }
+        return reversed;
     }
 
 }
