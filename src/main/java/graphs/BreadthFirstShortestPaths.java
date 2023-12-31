@@ -51,7 +51,22 @@ public class BreadthFirstShortestPaths {
 
     // Breadth-first search from multiple sources
     private void bfs(Graph G, Iterable<Integer> sources) {
-        // TODO
+        ArrayList<Integer> queue = new ArrayList<>();
+        for (int src : sources) {
+            marked[src] = true;
+            distTo[src] = 0;
+            queue.add(src);
+        }
+        while (!queue.isEmpty()){
+            int act = queue.remove(0);
+            for (int i : G.adj(act)) {
+                if(!marked[i]){
+                    distTo[i] = distTo(act) + 1;
+                    marked[i] = true;
+                    queue.add(i);
+                }
+            }
+        }
     }
 
     /**
@@ -61,8 +76,7 @@ public class BreadthFirstShortestPaths {
      * @return true if there is a path, and false otherwise
      */
     public boolean hasPathTo(int v) {
-        // TODO
-         return false;
+         return marked[v];
     }
 
     /**
@@ -73,8 +87,7 @@ public class BreadthFirstShortestPaths {
      * @return the number of edges in a shortest path
      */
     public int distTo(int v) {
-        // TODO
-         return -1;
+         return distTo[v];
     }
 
     static class Graph {

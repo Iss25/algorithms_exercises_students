@@ -1,5 +1,6 @@
 package graphs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -86,8 +87,11 @@ public class Bubbles {
      *         ForbiddenRelation and in the list.
      */
     public static List<ForbiddenRelation> cleanBubbles(List<Contact> contacts, int n) {
-        // TODO
-         return null;
+        List<ForbiddenRelation> to_kill = new ArrayList<>();
+        for (int i = 0; i < contacts.size(); i++) {
+            System.out.println(i);
+        }
+        return to_kill;
     }
 
 }
