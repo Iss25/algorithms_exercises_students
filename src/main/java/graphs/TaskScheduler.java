@@ -1,9 +1,6 @@
 package graphs;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The class TaskScheduler allows
@@ -57,8 +54,18 @@ public class TaskScheduler {
      * @param schedule a list of tasks to be scheduled in the order they will be executed.
      */
     public boolean isValid(List<String> schedule) {
-        // TODO
-        return false;
+        HashSet<String> scheduled = new HashSet<>();
+        for (int i = 0; i < schedule.size(); i++) {
+            List<String> dep = this.graph.get(schedule.get(i));
+            if (scheduled.contains(schedule.get(i))){
+                return false;
+            }
+            if(dep.stream().anyMatch(t -> !scheduled.contains(t))){
+                return false;
+            }
+            scheduled.add(schedule.get(i));
+        }
+        return scheduled.size() == graph.size();
     }
 
 
