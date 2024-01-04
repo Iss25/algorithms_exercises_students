@@ -40,6 +40,20 @@ public class WordTransformationSP {
         return s.substring(0, start) + new StringBuilder(s.substring(start, end)).reverse().toString() + s.substring(end);
     }
 
+    public static class Rot implements Comparable<Rot> {
+        String str;
+        int cost;
+
+        Rot(String val, int cost){
+            this.str = val;
+            this.cost = cost;
+        }
+
+        @Override
+        public int compareTo(Rot o) {
+            return this.cost - o.cost;
+        }
+    }
     /**
      * Compute the minimal cost from string "from" to string "to" representing the shortest path
      *
@@ -48,8 +62,25 @@ public class WordTransformationSP {
      * @return
      */
     public static int minimalCost(String from, String to) {
-        // TODO
-         return 0;
+        HashMap<String,Integer> cost_for = new HashMap<>();
+        PriorityQueue<Rot> queue = new PriorityQueue<>();
+        queue.add(new Rot(from,0));
+        cost_for.put(from,0);
+        while (!queue.isEmpty()){
+            Rot act = queue.poll();
+            String word = act.str;
+            for (int i = 0; i < word.length() + 1; i++) {
+                for (int j = i; j < word.length() + 1; j++) {
+                    String rotated = rotation(word,i,j);
+                    int cost = act.cost + j - i;
+                    if(!cost_for.containsKey(rotated) || cost < cost_for.get(rotated)){
+                        cost_for.put(rotated,cost);
+                        queue.add(new Rot(rotated,cost));
+                    }
+                }
+            }
+        }
+        return cost_for.get(to);
     }
 
 
