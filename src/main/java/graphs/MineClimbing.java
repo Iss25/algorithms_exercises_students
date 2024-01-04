@@ -1,6 +1,7 @@
 package graphs;
 
-//feel free to import anything here
+import java.util.Arrays;
+import java.util.PriorityQueue;
 
 
 /**
@@ -31,6 +32,21 @@ package graphs;
  */
 public class MineClimbing {
 
+    public static class Pos_Cost implements Comparable<Pos_Cost>{
+        public int x;
+        public int y;
+        public int cost;
+        public Pos_Cost(int x,int y, int cost){
+            this.x = x;
+            this.y = y;
+            this.cost = cost;
+        }
+        @Override
+        public int compareTo(Pos_Cost o) {
+            return -o.cost + cost;
+        }
+
+    }
 
     /**
      * Returns the minimum distance between (startX, startY) and (endX, endY), knowing that
@@ -44,7 +60,29 @@ public class MineClimbing {
      * 0 <= startY, endY < m
      */
     public static int best_distance(int[][] map, int startX, int startY, int endX, int endY) {
-        // TODO
-         return 0;
+        final int[][] dir = new int[][] {{1,0},{-1,0},{0,-1},{0,1}};
+        int[][] cost_to = new int[map.length][map[0].length];
+        for (int i = 0; i < cost_to.length; i++) {
+            Arrays.fill(cost_to[i],Integer.MAX_VALUE);
+        }
+        cost_to[startX][startY] = 0;
+        PriorityQueue<Pos_Cost> queue = new PriorityQueue<>();
+        queue.add(new Pos_Cost(startX,startY,0));
+        while (!queue.isEmpty()){
+            Pos_Cost curr = queue.poll();
+            if(curr.x == endX && curr.y == endY){
+                break;
+            }
+            for (int[] pos : dir) {
+                int x = (pos[0] + curr.x + map.length) % map.length;
+                int y = (pos[1] + curr.y + map[0].length) % map[0].length;
+                int cost = Math.abs(map[curr.x][curr.y] - map[x][y]);
+                if (cost_to[x][y] > cost + curr.cost){
+                    cost_to[x][y] = cost + curr.cost;
+                    queue.add(new Pos_Cost(x,y,cost_to[x][y]));
+                }
+            }
+        }
+        return cost_to[endX][endY];
     }
 }
