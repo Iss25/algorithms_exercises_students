@@ -1,5 +1,6 @@
 package graphs;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Collections;
@@ -47,7 +48,6 @@ public class GlobalWarmingPaths {
     public GlobalWarmingPaths(int[][] altitude, int waterLevel) {
         this.waterLevel = waterLevel;
         this.altitude = altitude;
-        // TODO
     }
 
 
@@ -61,9 +61,47 @@ public class GlobalWarmingPaths {
      *         If no such path, an empty list.
      */
     public List<Point> shortestPath(Point p1, Point p2) {
-        // TODO
-        // expected time complexity O(n^2)
-         return null;
+        boolean [][] marked = new boolean[altitude.length][altitude[0].length];
+        Point [][] to = new Point[altitude.length][altitude[0].length];
+        final int[][] dir = new int[][] {{-1,0},{0,1},{1,0},{0,-1}};
+        List<Point> queue = new ArrayList<>();
+        List<Point> path = new ArrayList<>();
+
+        if(p1.equals(p2)){
+            if (altitude[p1.getX()][p1.getY()] > waterLevel){
+                path.add(p1);
+                return path;
+            }
+            return null;
+        }
+
+        queue.add(p1);
+        while (!queue.isEmpty()){
+            Point curr = queue.remove(0);
+            if(curr.equals(p2)){
+                break;
+            }
+            for (int i = 0; i < 4; i++) {
+                int x = curr.getX() + dir[i][0];
+                int y = curr.getY() + dir[i][1];
+
+                if((0 <= x && x < altitude.length) && (0 <= y && y < altitude[0].length) && altitude[x][y] > waterLevel){
+                    if(!marked[x][y]){
+                        marked[x][y] = true;
+                        to[x][y] = curr;
+                        queue.add(new Point(x,y));
+                    }
+                }
+            }
+        }
+        if(marked[p2.getX()][p2.getY()]){
+            for (Point i = p2; !i.equals(p1) ; i = to[i.getX()][i.getY()]) {
+                path.add(i);
+            }
+            path.add(p1);
+            Collections.reverse(path);
+        }
+        return path;
 
     }
 
