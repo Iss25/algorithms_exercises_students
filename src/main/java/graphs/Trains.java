@@ -54,7 +54,7 @@ import java.util.*;
  */
 public class Trains {
 
-    /** 
+    /**
      * Considering given starting station and time, compute the earliest hour at which
      * any accessible station can be reached.
      * @param relations a list of relations that connect a pair (station, time) (the key)
@@ -71,31 +71,55 @@ public class Trains {
      *         The map must contain the starting station
      */
     public static Map<String, Integer> reachableEarliest(HashMap<StationTime, LinkedList<StationTime>> relations, StationTime startPoint) {
-         return null; 
+        Map<String,Integer> res = new HashMap<>();
+        res.put(startPoint.station, startPoint.time);
+
+        PriorityQueue<StationTime> queue = new PriorityQueue<>();//PriorityQueue<>((x,y) -> x.compareTo(y));
+        for(StationTime key : relations.keySet()){
+            queue.add(key);
+        }
+
+        while (!queue.isEmpty()){
+            StationTime curr = queue.poll();
+            if (res.containsKey(curr.station) && curr.time >= res.get(curr.station)){
+                for (StationTime next : relations.get(curr)){
+                    if(res.containsKey(next.station)){
+                        if (res.get(next.station) > next.time){
+                            res.put(next.station,next.time);
+                        }
+                    }
+                    else {
+                        res.put((next.station), next.time);
+                    }
+                }
+            }
+        }
+
+        return res;
     }
 
     public static class StationTime implements Comparable<StationTime> {
 
-        public final String station; 
-        public final int time;  
-    
+        public final String station;
+        public final int time;
+
         public StationTime(String station, int time) {
             this.station = station;
             this.time = time;
         }
-    
+
         @Override
         public int hashCode() {
             return station.hashCode() ^ Integer.hashCode(~time);
         }
-    
+
         @Override
         public boolean equals(Object obj) {
             if(obj instanceof StationTime)
                 return ((StationTime) obj).station.equals(station) && ((StationTime) obj).time == time;
             return false;
         }
-    
+
         @Override
         public int compareTo(StationTime o) {
             int out = time - o.time;
