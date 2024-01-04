@@ -1,6 +1,10 @@
 package graphs;
 
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * In this exercise, we revisit the GlobalWarming
  * class from the sorting package.
@@ -44,6 +48,10 @@ package graphs;
  */
 public class GlobalWarming {
 
+    private int nbr_island;
+    private int [] island;
+    private int [][] altitude;
+    private int waterLevel;
 
     /**
      * Constructor. The run time of this method is expected to be in 
@@ -53,6 +61,35 @@ public class GlobalWarming {
      * @param waterLevel the water level under which the entries are submerged
      */
     public GlobalWarming(int [][] altitude, int waterLevel) {
+        this.nbr_island = 0;
+        this.waterLevel = waterLevel;
+        this.altitude = altitude;
+        this.island = new int[altitude.length * altitude.length];
+        Arrays.fill(this.island,(altitude.length * altitude.length) + 1);
+        for (int i = 0; i < altitude.length; i++) {
+            for (int j = 0; j < altitude.length; j++) {
+                island_detector(i,j);
+                if(this.island[i * this.altitude.length + j] == this.nbr_island){
+                    this.nbr_island += 1;
+                }
+            }
+        }
+    }
+
+    private void island_detector(int row, int col) {
+        if (row < 0 || row >= this.altitude.length || col < 0 || col >= this.altitude.length || this.island[row*this.altitude.length + col] <= this.altitude.length*this.altitude.length){
+            return;
+        }
+        if (this.altitude[row][col] <= this.waterLevel) {
+            this.island[row*this.altitude.length + col] = -1;
+        }
+        else {
+            this.island[row*this.altitude.length + col] = this.nbr_island;
+            island_detector(row, col+1);
+            island_detector(row+1, col);
+            island_detector(row, col-1);
+            island_detector(row-1, col);
+        }
     }
 
     /**
@@ -61,7 +98,7 @@ public class GlobalWarming {
      * Expected time complexity O(1)
      */
     public int nbIslands() {
-         return 0;
+         return this.nbr_island;
     }
 
     /**
@@ -73,7 +110,7 @@ public class GlobalWarming {
      * @param p2 the second point to compare
      */
     public boolean onSameIsland(Point p1, Point p2) {
-         return false;
+        return this.island[p1.getX()*this.altitude.length + p1.getY()] != -1 && this.island[p1.getX()*this.altitude.length + p1.getY()] == this.island[p2.getX()*this.altitude.length + p2.getY()];
     }
 
 
