@@ -1,5 +1,8 @@
 package sorting;
 
+import java.*;
+import java.util.Arrays;
+
 /**
  * Let a be an array of integers.
  * In this exercise we are interested in finding
@@ -23,6 +26,30 @@ public class ClosestPair {
       * @param x the target value for the sum
       */
     public static int[] closestPair(int [] a, int x) {
-         return null; // TODO
+        Arrays.sort(a);
+        int low = 0;
+        int high = a.length-1;
+        int[] res = new int[]{a[low],a[high]};
+
+        while(low < high){
+            int curr = a[low] + a[high];
+            if(curr < x){
+                low += 1;
+            }
+            if(curr > x){
+                high -= 1;
+            }
+            if(curr == x){
+                res[0] = a[low];
+                res[1] = a[high];
+                return res;
+            }
+            if(Math.abs(x- (a[low] + a[high])) < Math.abs(x-(res[0]+res[1]))){
+                res[0] = a[low];
+                res[1] = a[high];
+            }
+        }
+        System.out.println(Arrays.toString(res));
+        return res;
     }
 }
