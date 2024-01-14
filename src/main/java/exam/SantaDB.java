@@ -4,7 +4,9 @@ package exam;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.*;
 
 /**
  * Santa Claus is getting ready for his annual gift distribution.
@@ -57,8 +59,17 @@ public class SantaDB {
      * @return The list of gift assignments
      */
     public static List<GiftAssignment> innerJoin(Child[] children, Gift[] gifts) {
-        // TODO
-        return null;
+        List<GiftAssignment> res = new ArrayList<>();
+        HashMap<Integer,String> map = new HashMap<>();
+        for (int i = 0; i < children.length; i++) {
+            map.put(children[i].id,children[i].name);
+        }
+
+        for (int i = 0; i < gifts.length; i++) {
+            GiftAssignment temp = new GiftAssignment(gifts[i].childId, map.get(gifts[i].childId),gifts[i].giftId,gifts[i].details);
+            res.add(temp);
+        }
+        return res;
     }
 
 }
