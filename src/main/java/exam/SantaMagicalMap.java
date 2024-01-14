@@ -1,5 +1,6 @@
 package exam;
 
+import java.util.*;
 
 /**
  * Santa Claus is streamlining his delivery routes with a magical map.
@@ -28,5 +29,29 @@ public class SantaMagicalMap {
      *               but it is zero on the diagonal, i.e. matrix[i][i] = 0.
      */
     public static void adjustDistanceMatrix(int[][] matrix) {
+        int N = matrix.length;
+
+        int[][] dist = new int[N][N];
+
+        for (int i = 0; i < N; i++) {
+            Arrays.fill(dist[i], Integer.MAX_VALUE);
+
+            final int finalI = i;
+            PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.comparingInt((index) -> dist[finalI][index]));
+            pq.add(i);
+            dist[i][i] = 0;
+
+            while (!pq.isEmpty()) {
+                int u = pq.poll();
+
+                for (int j = 0; j < N; j++) {
+                    if (dist[i][u] + matrix[u][j] < dist[i][j]) {
+                        dist[i][j] = dist[i][u] + matrix[u][j];
+                        pq.add(j);
+                    }
+                }
+            }
+        }
+        System.arraycopy(dist,0,matrix,0,dist.length);
     }
 }
