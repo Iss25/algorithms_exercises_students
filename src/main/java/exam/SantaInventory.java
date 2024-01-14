@@ -1,5 +1,6 @@
 package exam;
 
+import java.util.ArrayList;
 
 /**
  * Santa needs to calculate the median price of gifts he will deliver this year.
@@ -42,6 +43,7 @@ public class SantaInventory {
         private int toyPrice; // Price of the toy
         private int count; // Number of time a toy with price `toyPrice` has been added in the tree
         private Node left, right; // left and right subtrees
+        private int size;
     }
 
     /**
@@ -57,6 +59,41 @@ public class SantaInventory {
      *                 this count is added to the existing count.
      */
     public void put(int toyPrice, int count) {
+        Node temp = new Node();
+        temp.toyPrice = toyPrice;
+        temp.count = count;
+        Node act_root = this.root;
+        if(act_root == null){
+            this.root = temp;
+        }
+        else{
+            while(act_root != null){
+                if(toyPrice == act_root.toyPrice){
+                    act_root.count += count;
+                    break;
+                }
+                else if(toyPrice < act_root.toyPrice){
+                    if(act_root.left == null){
+                        act_root.left = temp;
+                        break;
+                    }
+                    else {
+                        act_root = act_root.left;
+                    }
+                }
+                else if(toyPrice > act_root.toyPrice){
+                    if(act_root.right == null){
+                        act_root.right = temp;
+                        break;
+                    }
+                    else{
+                        act_root = act_root.right;
+                    }
+                }
+
+            }
+        }
+        this.root.size += count;
     }
 
     /**
@@ -71,7 +108,20 @@ public class SantaInventory {
      * @throws IllegalArgumentException if the tree is empty.
      */
     public int median() {
-        return -1;
+        if(this.root == null) {
+            throw new IllegalArgumentException();
+        }
+        int med = this.root.size/2 + 1;
+        ArrayList<Integer> list = new ArrayList<>();
+        inorder(list,this.root);
+        return list.get(med);
     }
+    
+    void inorder(ArrayList list,Node current) {
+        if (current == null) return;
 
+        inorder(list, current.left);
+        for (int i = 0; i < current.count; i++) list.add(current.toyPrice);
+        inorder(list, current.right);
+    }
 }
